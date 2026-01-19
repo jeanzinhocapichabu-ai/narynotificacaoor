@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NaryNotificação</title>
+
+  <style>
+    body{
+      margin:0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #25003d, #070010);
+      color:white;
+      padding:14px;
+    }
+
+    .topo{
+      text-align:center;
+      margin-bottom:14px;
+    }
+
+    .logo{
+      width:100%;
+      max-width:520px;
+      border-radius:18px;
+      box-shadow:0 0 25px rgba(180,0,255,0.6);
+      border:1px solid rgba(200,100,255,0.25);
+      margin-bottom:10px;
+      display:block;
+    }
+
+    h1{
+      margin:0;
+      font-size:26px;
+      text-shadow:0 0 25px rgba(200,0,255,0.9);
+    }
+
+    .sub{
+      margin-top:6px;
+      font-size:13px;
+      color:rgba(255,255,255,0.7);
+    }
+
+    .dashboard{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-bottom:14px;
+    }
+
+    .dashCard{
+      padding:14px;
+      border-radius:18px;
+      background: linear-gradient(135deg, rgba(170,0,255,0.25), rgba(40,0,80,0.9));
+      border: 1px solid rgba(200,100,255,0.25);
+      box-shadow:0 0 18px rgba(170,0,255,0.25);
+      text-align:center;
+    }
+
+    .dashTitle{
+      font-size:12px;
+      color:rgba(255,255,255,0.75);
+      margin-bottom:6px;
+    }
+
+    .dashValue{
+      font-size:18px;
+      font-weight:bold;
+      text-shadow:0 0 12px rgba(200,0,255,0.5);
+    }
+
+    .card{
+      background: rgba(15,0,30,0.85);
+      border: 1px solid rgba(180,0,255,0.18);
+      border-radius:18px;
+      padding:14px;
+      margin-bottom:14px;
+      box-shadow:0 0 14px rgba(120,0,255,0.25);
+    }
+
+    .card h3{
+      margin:0 0 10px 0;
+      font-size:18px;
+      text-shadow:0 0 10px rgba(200,0,255,0.6);
+    }
+
+    input{
+      width:100%;
+      padding:12px;
+      margin:6px 0;
+      border-radius:14px;
+      border:none;
+      outline:none;
+      background: rgba(255,255,255,0.08);
+      color:white;
+      border: 1px solid rgba(200,0,255,0.18);
+      font-size:14px;
+      box-sizing:border-box;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      margin-top:8px;
+      border:none;
+      border-radius:14px;
+      background: linear-gradient(135deg, #8a00ff, #c000ff);
+      color:white;
+      font-size:16px;
+      box-shadow:0 0 14px rgba(180,0,255,0.35);
+      cursor:pointer;
+    }
+
+    .zap{
+      background: linear-gradient(135deg, #1ebe5d, #25D366);
+      box-shadow:0 0 14px rgba(37,211,102,0.35);
+    }
+
+    .del{
+      background: linear-gradient(135deg, #b00020, #ff0033);
+      box-shadow:0 0 14px rgba(255,0,50,0.35);
+    }
+
+    .sec{
+      background: linear-gradient(135deg, #333, #666);
+      box-shadow:0 0 14px rgba(255,255,255,0.10);
+    }
+
+    .linha{
+      margin:6px 0;
+      font-size:14px;
+      color:rgba(255,255,255,0.85);
+    }
+
+    .status{
+      margin-top:10px;
+      padding:10px;
+      border-radius:14px;
+      background: rgba(170,0,255,0.10);
+      border: 1px solid rgba(200,0,255,0.18);
+      font-weight:bold;
+      text-align:center;
+    }
+
+    .lucro{
+      margin-top:8px;
+      padding:10px;
+      border-radius:14px;
+      background: rgba(0,255,150,0.10);
+      border: 1px solid rgba(0,255,150,0.18);
+      font-weight:bold;
+      text-align:center;
+    }
+
+    .mini{
+      font-size:12px;
+      opacity:0.75;
+      margin-top:6px;
+      text-align:center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="topo">
+    <img src="logo.png" class="logo" alt="NaryNotificação" onerror="this.style.display='none'">
+    <h1>NaryNotificação</h1>
+    <div class="sub">Salva • WhatsApp • Vencimento • Lucro</div>
+  </div>
+
+  <div class="dashboard">
+    <div class="dashCard">
+      <div class="dashTitle">💰 Total Vendas</div>
+      <div class="dashValue" id="totalVendas">R$ 0,00</div>
+    </div>
+
+    <div class="dashCard">
+      <div class="dashTitle">🧾 Total Custos</div>
+      <div class="dashValue" id="totalCustos">R$ 0,00</div>
+    </div>
+
+    <div class="dashCard">
+      <div class="dashTitle">📈 Lucro Total</div>
+      <div class="dashValue" id="lucroTotal">R$ 0,00</div>
+    </div>
+
+    <div class="dashCard">
+      <div class="dashTitle">📌 Clientes</div>
+      <div class="dashValue" id="qtd">0</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>➕ Adicionar Cliente</h3>
+
+    <input id="streaming" placeholder="Streaming (ex: Netflix)" />
+    <input id="cliente" placeholder="Nome do cliente" />
+    <input id="telefone" placeholder="Telefone (ex: 11999999999)" />
+
+    <input id="custo" type="number" step="0.01" placeholder="Custo (ex: 15.00)" />
+    <input id="venda" type="number" step="0.01" placeholder="Venda (ex: 39.90)" />
+
+    <input id="vencimento" type="date" />
+
+    <button onclick="add()">Salvar</button>
+    <div class="mini">✅ Salva no celular (backup automático)</div>
+  </div>
+
+  <div class="card">
+    <h3>🧷 Backup</h3>
+    <button class="sec" onclick="exportar()">📤 Exportar Backup</button>
+    <button class="sec" onclick="importar()">📥 Importar Backup</button>
+    <button class="del" onclick="limparTudo()">🧨 Limpar Tudo</button>
+  </div>
+
+  <div id="lista"></div>
+
+<script>
+  const KEY = "nary_app";
+  const KEY_BACKUP = "nary_app_backup";
+
+  function temAndroidStorage(){
+    return (window.AndroidStorage &&
+      typeof AndroidStorage.saveData === "function" &&
+      typeof AndroidStorage.loadData === "function");
+  }
+
+  function carregar(){
+    // tenta AndroidStorage (se existir)
+    if(temAndroidStorage()){
+      try{
+        const txt = AndroidStorage.loadData();
+        if(txt && txt.trim().length > 0){
+          return JSON.parse(txt);
+        }
+      }catch(e){}
+    }
+
+    // fallback localStorage
+    try{
+      const normal = localStorage.getItem(KEY);
+      if(normal) return JSON.parse(normal);
+
+      const backup = localStorage.getItem(KEY_BACKUP);
+      if(backup) return JSON.parse(backup);
+    }catch(e){}
+
+    return [];
+  }
+
+  let dados = carregar();
+
+  function salvar(){
+    const txt = JSON.stringify(dados);
+
+    // salva no Android (se tiver)
+    if(temAndroidStorage()){
+      try{ AndroidStorage.saveData(txt); }catch(e){}
+    }
+
+    // salva no localStorage também
+    try{
+      localStorage.setItem(KEY, txt);
+      localStorage.setItem(KEY_BACKUP, txt);
+    }catch(e){}
+  }
+
+  function money(v){
+    return "R$ " + Number(v).toFixed(2).replace(".", ",");
+  }
+
+  function status(dataVenc){
+    const hoje = new Date(); hoje.setHours(0,0,0,0);
+    const venc = new Date(dataVenc); venc.setHours(0,0,0,0);
+    const diff = Math.floor((venc - hoje) / (1000*60*60*24));
+    if(diff === 1) return "⚠️ Amanhã";
+    if(diff === 0) return "🔔 Hoje";
+    if(diff < 0) return "❌ Vencida";
+    return "✅ Em dia";
+  }
+
+  function atualizarDashboard(){
+    let totalVendas = 0;
+    let totalCustos = 0;
+
+    dados.forEach(item=>{
+      totalVendas += Number(item.venda || 0);
+      totalCustos += Number(item.custo || 0);
+    });
+
+    document.getElementById("totalVendas").innerText = money(totalVendas);
+    document.getElementById("totalCustos").innerText = money(totalCustos);
+    document.getElementById("lucroTotal").innerText = money(totalVendas - totalCustos);
+    document.getElementById("qtd").innerText = dados.length;
+  }
+
+  function render(){
+    const lista = document.getElementById("lista");
+    lista.innerHTML = "";
+
+    dados.forEach((item, i)=>{
+      const lucro = Number(item.venda) - Number(item.custo);
+
+      const div = document.createElement("div");
+      div.className="card";
+      div.innerHTML = `
+        <h3>${item.streaming}</h3>
+
+        <div class="linha">👤 <b>${item.cliente}</b></div>
+        <div class="linha">📞 <b>${item.telefone}</b></div>
+
+        <div class="linha">🧾 Custo: <b>${money(item.custo)}</b></div>
+        <div class="linha">💰 Venda: <b>${money(item.venda)}</b></div>
+        <div class="lucro">📈 Lucro: ${money(lucro)}</div>
+
+        <div class="linha">📅 Vencimento: <b>${item.vencimento}</b></div>
+        <div class="status">${status(item.vencimento)}</div>
+
+        <button class="zap" onclick="zap(${i})">📲 WhatsApp</button>
+        <button class="del" onclick="excluir(${i})">🗑️ Excluir</button>
+      `;
+      lista.appendChild(div);
+    });
+
+    salvar();
+    atualizarDashboard();
+  }
+
+  function add(){
+    const streaming = document.getElementById("streaming").value.trim();
+    const cliente = document.getElementById("cliente").value.trim();
+    const telefone = document.getElementById("telefone").value.trim();
+
+    const custo = parseFloat(document.getElementById("custo").value);
+    const venda = parseFloat(document.getElementById("venda").value);
+
+    const vencimento = document.getElementById("vencimento").value;
+
+    if(!streaming || !cliente || !telefone || isNaN(custo) || isNaN(venda) || !vencimento){
+      alert("Preencha tudo certinho!");
+      return;
+    }
+
+    dados.push({streaming, cliente, telefone, custo, venda, vencimento});
+    salvar();
+
+    document.getElementById("streaming").value="";
+    document.getElementById("cliente").value="";
+    document.getElementById("telefone").value="";
+    document.getElementById("custo").value="";
+    document.getElementById("venda").value="";
+    document.getElementById("vencimento").value="";
+
+    render();
+  }
+
+  function excluir(i){
+    dados.splice(i, 1);
+    salvar();
+    render();
+  }
+
+  function zap(i){
+    const item = dados[i];
+    const tel = item.telefone.replace(/\D/g,"");
+    const msg = `Olá ${item.cliente}, sua fatura do ${item.streaming} está chegando. Posso confirmar o pagamento?`;
+
+    if(!tel || tel.length < 10){
+      alert("Telefone inválido! Use DDD + número (ex: 11999999999)");
+      return;
+    }
+
+    const url = `https://wa.me/55${tel}?text=${encodeURIComponent(msg)}`;
+    window.location.href = url;
+  }
+
+  function exportar(){
+    const txt = JSON.stringify(dados, null, 2);
+    prompt("COPIE O BACKUP:", txt);
+  }
+
+  function importar(){
+    const txt = prompt("COLE O BACKUP:");
+    if(!txt) return;
+
+    try{
+      const arr = JSON.parse(txt);
+      if(!Array.isArray(arr)) throw new Error("invalido");
+      dados = arr;
+      salvar();
+      render();
+      alert("Backup importado!");
+    }catch(e){
+      alert("Backup inválido!");
+    }
+  }
+
+  function limparTudo(){
+    if(!confirm("Apagar tudo?")) return;
+    dados = [];
+    salvar();
+    render();
+  }
+
+  // start
+  render();
+</script>
+
+</body>
+</html>
